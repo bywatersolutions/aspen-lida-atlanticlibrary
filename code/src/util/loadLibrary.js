@@ -146,10 +146,11 @@ export async function getAppSettings(url, timeout, slug) {
                }else{
                     console.log(response);
                }
-               popToast(getTermFromDictionary('en', 'error_no_server_connection'), "Could not retrieve App Settings, please try again later", 'error');
+               popToast(getTermFromDictionary('en', 'error_no_server_connection'), "Could not retrieve valid App Settings, please try again later.", 'error');
                return [];
           }
      }catch (err) {
+          popToast(getTermFromDictionary('en', 'error_no_server_connection'), "Could not retrieve App Settings, please try again later.", 'error');
           console.log("Exception in getAppSettings " + err);
           return [];
      }
