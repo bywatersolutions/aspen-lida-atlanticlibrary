@@ -1,20 +1,27 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { LibrarySystemContext, ThemeContext } from '../context/initialContext';
-import { ChevronLeftIcon, CloseIcon, Pressable, Icon, HStack, VStack } from 'native-base';
+import { ChevronLeftIcon, CloseIcon, Pressable, Icon, HStack, VStack, useColorModeValue } from 'native-base';
 import { View, Image, StyleSheet, Text } from '@gluestack-ui/themed';
-import { Platform } from 'react-native';
+import { Platform, useWindowDimensions } from 'react-native';
+import Constants from 'expo-constants';
 
 const HeaderLogoBar = (props) => {
-     const { theme } = React.useContext(ThemeContext);
+     const { theme, colorMode } = React.useContext(ThemeContext);
      const { library } = React.useContext(LibrarySystemContext);
+     const { width, height } = useWindowDimensions();
      if (library.headerLogoApp){
           const localBrandingLogoUri = library.headerLogoApp;
+          const backgroundColor = useColorModeValue('light', 'dark');
           //console.log(library.displayName);
+          const marginTop = Constants.statusBarHeight;
+          //Assume an image that is 1536 x 200
+          const ratio = width/1536;
+          const imageHeight = 200 * ratio;
           return (
-               <HStack >
+               <HStack style={{backgroundColor: {backgroundColor}, marginTop: {marginTop} }}>
                      <Image
-                        source={{uri: localBrandingLogoUri}} size={50} alt={library.displayName} placeholder=""  style={{ maxWidth:'100%', width: '100%', height:50, backgroundColor:theme['colors']['primary']['base'] }}
+                        source={{uri: localBrandingLogoUri}} alt={library.displayName} placeholder=""  style={{ resizeMode: 'contain', maxHeight:imageHeight, maxWidth:'100%', width: '100%', backgroundColor:{backgroundColor}}}
                       />
                </HStack>
           );
