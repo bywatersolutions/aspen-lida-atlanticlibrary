@@ -1,10 +1,15 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { LibrarySystemContext, ThemeContext } from '../context/initialContext';
-import { ChevronLeftIcon, CloseIcon, Pressable, Icon, HStack, VStack, useColorModeValue } from 'native-base';
-import { View, Image, StyleSheet, Text } from '@gluestack-ui/themed';
+import { ChevronLeftIcon, CloseIcon, Pressable, Icon, HStack, VStack } from 'native-base';
+import { View, Image, StyleSheet, Text, useColorMode } from '@gluestack-ui/themed';
 import { Platform, useWindowDimensions } from 'react-native';
 import Constants from 'expo-constants';
+
+let topPadding = 7;
+if (Platform.OS === 'android') {
+     topPadding = 3;
+}
 
 const HeaderLogoBar = (props) => {
      const { theme, colorMode } = React.useContext(ThemeContext);
@@ -12,18 +17,19 @@ const HeaderLogoBar = (props) => {
      const { width, height } = useWindowDimensions();
      if (library.headerLogoApp){
           const localBrandingLogoUri = library.headerLogoApp;
-          const backgroundColor = useColorModeValue('light', 'dark');
-          //console.log(library.displayName);
-          let marginTop = 24;
-          if (Platform.OS === 'android') {
-               marginTop = 0;
-          }
 
           //Assume an image that is 1536 x 200
           const ratio = width/1536;
           const imageHeight = 200 * ratio;
+          const colorMode = useColorMode();
+          console.log("Color mode is " + colorMode);
+          let backgroundColor = '#000000';
+          if (colorMode == 'light') {
+               backgroundColor = '#FFFFFF';
+          }
+
           return (
-               <HStack style={{backgroundColor: {backgroundColor}, marginTop: {marginTop} }}>
+               <HStack backgroundColor={backgroundColor} safeAreaTop='1' safeAreaBottom='1' >
                      <Image
                         source={{uri: localBrandingLogoUri}} alt={library.displayName} placeholder=""  style={{ resizeMode: 'contain', maxHeight:imageHeight, maxWidth:'100%', width: '100%', backgroundColor:{backgroundColor}}}
                       />
@@ -34,19 +40,23 @@ const HeaderLogoBar = (props) => {
      }
 };
 
-let topPadding = 7;
-if (Platform.OS === 'android') {
-     topPadding = 3;
-}
+
 
 export default function TitleWithLogo(props) {
      const { theme } = React.useContext(ThemeContext);
      const navigation = useNavigation();
      const hideBack = props.hideBack ?? false;
+
+     const colorMode = useColorMode();
+     let backgroundColor = '#000000';
+     if (colorMode == 'dark') {
+          backgroundColor = '#FFFFFF';
+     }
+
      return (
-          <VStack>
+          <VStack safeAreaTop={topPadding}  backgroundColor={backgroundColor} >
                <HeaderLogoBar />
-               <HStack safeAreaLeft={7} safeAreaRight={7} safeAreaTop={topPadding} safeAreaBottom={2} alignItems="left" style={{ backgroundColor:theme['colors']['primary']['base'] }} >
+               <HStack safeAreaLeft={7} safeAreaRight={7} safeAreaBottom={2} safeAreaTop={2} alignItems="left" style={{ backgroundColor:theme['colors']['primary']['base'] }} >
                     {navigation.canGoBack() && !hideBack && (
                        <Pressable onPress={() => navigation.goBack()} mr={3} hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }} >
                             <ChevronLeftIcon size={5} color={theme['colors']['primary']['baseContrast']} />
