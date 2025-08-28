@@ -1,8 +1,11 @@
-import { Checkbox, HStack, Text } from 'native-base';
+import { Checkbox, CheckboxIndicator, CheckboxLabel, HStack, Text, Icon } from '@gluestack-ui/themed';
+import { MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
 import { logDebugMessage } from '../../../util/logging.js';
+import { ThemeContext } from '../../../context/initialContext';
 
 export const Facet_Checkbox = ({ data, category, values = [], updateCheckboxFacet }) => {
+     const {theme, textColor, colorMode } = React.useContext(ThemeContext);
      const isChecked = values.includes(data.value);
      const handleChange = (newValue) => {
           logDebugMessage("Clicked on " + data.value + " isChecked is " + isChecked + " newValue is " + newValue);
@@ -10,21 +13,30 @@ export const Facet_Checkbox = ({ data, category, values = [], updateCheckboxFace
      };
 
      return (
-          <HStack alignItems="center" px={3} py={4}>
+          <HStack alignItems="center" px="$3" py="$4">
                <Checkbox
                     value={data.value}
                     accessibilityLabel={data.display}
                     isChecked={isChecked}
-                    onChange={(value)=>{
+                    onChange={(value) => {
                        handleChange(value);
                     }}
                >
-                    <Text
-                         _light={{ color: 'darkText' }}
-                         _dark={{ color: 'lightText' }}
+                    <CheckboxIndicator
+                         sx={{
+                              ':checked': {
+                                   borderColor: theme['colors']['primary']['500'],
+                                   backgroundColor: theme['colors']['primary']['500'],
+                              },
+                         }}
                     >
-                         {data.display}{data.count ? ` (${data.count})` : ''}
-                    </Text>
+                         {isChecked && <Icon as={MaterialIcons} name="check" color={theme['colors']['primary']['500-text']} size="sm" />}
+                    </CheckboxIndicator>
+                    <CheckboxLabel pl="$2">
+                         <Text color={textColor}>
+                              {data.display}{data.count ? ` (${data.count})` : ''}
+                         </Text>
+                    </CheckboxLabel>
                </Checkbox>
           </HStack>
      );

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import moment from 'moment';
-import { Box, Button, Container, FormControl, HStack, Input, Text } from 'native-base';
+import { Box, Button, ButtonGroup, ButtonText, FormControl, HStack, Input, InputField, Text, VStack } from '@gluestack-ui/themed';
 import React from 'react';
 import { ScrollView } from 'react-native';
 
@@ -8,12 +8,14 @@ import { ScrollView } from 'react-native';
 import { LoadingSpinner } from '../../../components/loadingSpinner';
 import { getTermFromDictionary } from '../../../translations/TranslationService';
 import { addAppliedFilter } from '../../../util/search';
+import { ThemeContext } from '../../../context/initialContext';
 
 export const Facet_Year = ({ data, category, updater, language }) => {
      const [isLoading, setIsLoading] = React.useState(true);
      const [yearFrom, setYearFrom] = React.useState('');
      const [yearTo, setYearTo] = React.useState('');
      const [value, setValue] = React.useState('');
+     const {theme, textColor, colorMode } = React.useContext(ThemeContext);
 
      React.useEffect(() => {
           setIsLoading(false);
@@ -62,49 +64,57 @@ export const Facet_Year = ({ data, category, updater, language }) => {
 
      return (
           <ScrollView>
-               <Box safeArea={5}>
-                    <FormControl mb={2}>
-                         <HStack space={3} justifyContent="center">
+               <Box p="$5">
+                    <FormControl mb="$2">
+                         <HStack space="sm" justifyContent="center">
                               <Input
                                    size="lg"
-                                   placeholder={getTermFromDictionary(language, 'year_from')}
-                                   accessibilityLabel={getTermFromDictionary(language, 'year_from')}
-                                   value={yearFrom}
-                                   onChangeText={(value) => {
-                                        updateValue('yearFrom', value);
-                                   }}
-                                   w="50%"
-                                   _dark={{
-                                        color: 'muted.50',
-                                        borderColor: 'muted.50',
-                                   }}
-                              />
+                                   flex={1}
+                                   borderColor={colorMode === 'light' ? theme['colors']['coolGray']['500'] : theme['colors']['gray']['300']}
+                              >
+                                   <InputField
+                                        color={textColor}
+                                        placeholder={getTermFromDictionary(language, 'year_from')}
+                                        accessibilityLabel={getTermFromDictionary(language, 'year_from')}
+                                        value={yearFrom}
+                                        onChangeText={(value) => {
+                                             updateValue('yearFrom', value);
+                                        }}
+                                   />
+                              </Input>
                               <Input
                                    size="lg"
-                                   placeholder={getTermFromDictionary(language, 'year_to')}
-                                   accessibilityLabel={getTermFromDictionary(language, 'year_to')}
-                                   onChangeText={(value) => {
-                                        updateValue('yearTo', value);
-                                   }}
-                                   w="50%"
-                                   _dark={{
-                                        color: 'muted.50',
-                                        borderColor: 'muted.50',
-                                   }}
-                              />
+                                   flex={1}
+                                   borderColor={colorMode === 'light' ? theme['colors']['coolGray']['500'] : theme['colors']['gray']['300']}
+                              >
+                                   <InputField
+                                        color={textColor}
+                                        placeholder={getTermFromDictionary(language, 'year_to')}
+                                        accessibilityLabel={getTermFromDictionary(language, 'year_to')}
+                                        onChangeText={(value) => {
+                                             updateValue('yearTo', value);
+                                        }}
+                                   />
+                              </Input>
                          </HStack>
                     </FormControl>
                     {category === 'publishDate' || category === 'publishDateSort' ? (
-                         <Container>
-                              <Text _light={{ color: 'darkText' }} _dark={{ color: 'lightText' }}>
+                         <VStack space="sm">
+                              <Text color={textColor}>
                                    {getTermFromDictionary(language, 'published_in_the_last')}
                               </Text>
-                              <Button.Group variant="subtle">
-                                   <Button onPress={() => _updateYearTo(1)}>{getTermFromDictionary(language, 'year')}</Button>
-                                   <Button onPress={() => _updateYearTo(5)}>5 {getTermFromDictionary(language, 'years')}</Button>
-                                   <Button onPress={() => _updateYearTo(10)}>10 {getTermFromDictionary(language, 'years')}</Button>
-                              </Button.Group>
-                         </Container>
+                              <ButtonGroup>
+                                   <Button variant="outline" onPress={() => _updateYearTo(1)} borderColor={theme['colors']['primary']['500']}>
+                                        <ButtonText color={theme['colors']['primary']['500']}>{getTermFromDictionary(language, 'year')}</ButtonText>
+                                   </Button>
+                                   <Button variant="outline" onPress={() => _updateYearTo(5)} borderColor={theme['colors']['primary']['500']}>
+                                        <ButtonText color={theme['colors']['primary']['500']}>5 {getTermFromDictionary(language, 'years')}</ButtonText>
+                                   </Button>
+                                   <Button variant="outline" onPress={() => _updateYearTo(10)} borderColor={theme['colors']['primary']['500']}>
+                                        <ButtonText color={theme['colors']['primary']['500']}>10 {getTermFromDictionary(language, 'years')}</ButtonText>
+                                   </Button>
+                              </ButtonGroup>
+                         </VStack>
                     ) : null}
                </Box>
           </ScrollView>

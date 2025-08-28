@@ -1,6 +1,6 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import _ from 'lodash';
-import { HStack, Icon, Pressable, Text, VStack } from 'native-base';
+import { HStack, Icon, Pressable, Text, VStack } from '@gluestack-ui/themed';
 import React from 'react';
 import { ScrollView } from 'react-native';
 import Stars from 'react-native-stars';
@@ -8,6 +8,7 @@ import Stars from 'react-native-stars';
 // custom components and helper files
 import { LoadingSpinner } from '../../../components/loadingSpinner';
 import { addAppliedFilter, removeAppliedFilter } from '../../../util/search';
+import { ThemeContext } from '../../../context/initialContext';
 
 export const Facet_Rating = ({ data, category, updater }) => {
      const [isLoading, setIsLoading] = React.useState(true);
@@ -38,6 +39,7 @@ export const Facet_Rating = ({ data, category, updater }) => {
                value: '0',
           },
      ]);
+     const {theme, textColor, colorMode } = React.useContext(ThemeContext);
 
      React.useEffect(() => {
           setIsLoading(false);
@@ -75,13 +77,26 @@ export const Facet_Rating = ({ data, category, updater }) => {
 
      return (
           <ScrollView>
-               <VStack space={2}>
+               <VStack space="$2">
                     {stars.map((star, index) => (
-                         <Pressable key={index} onPress={() => updateSearch(star.label)} p={0.5} py={2}>
-                              <HStack space={3} justifyContent="flex-start" alignItems="center">
-                                   {value === star.label ? <Icon as={MaterialIcons} name="radio-button-checked" size="lg" color="primary.600" /> : <Icon as={MaterialIcons} name="radio-button-unchecked" size="lg" color="muted.400" />}
-                                   <Stars default={star.value} count={5} starSize={50} disabled fullStar={<Icon as={MaterialIcons} name="star" size="lg" color="yellow.500" />} emptyStar={<Icon as={MaterialIcons} name="star-border" size="lg" color="yellow.500" />} />
-                                   <Text _light={{ color: 'darkText' }} _dark={{ color: 'lightText' }} ml={2}>
+                         <Pressable key={index} onPress={() => updateSearch(star.label)} p="$0.5" py="$2">
+                              <HStack space="sm" justifyContent="flex-start" alignItems="center">
+                                   {value === star.label ?
+                                        <Icon as={MaterialIcons} name="radio-button-checked" size="lg" color={theme['colors']['primary']['600']} /> :
+                                        <Icon as={MaterialIcons} name="radio-button-unchecked" size="lg" color={theme['colors']['muted']['400']} />
+                                   }
+                                   <Stars
+                                        default={star.value}
+                                        count={5}
+                                        starSize={50}
+                                        disabled
+                                        fullStar={<Icon as={MaterialIcons} name="star" size="lg" color={theme['colors']['yellow']['500']} />}
+                                        emptyStar={<Icon as={MaterialIcons} name="star-border" size="lg" color={theme['colors']['yellow']['500']} />}
+                                   />
+                                   <Text
+                                        color={textColor}
+                                        ml="$2"
+                                   >
                                         ({getRatingCount(star.label)})
                                    </Text>
                               </HStack>

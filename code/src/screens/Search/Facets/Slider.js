@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Box, FormControl, HStack, Input } from 'native-base';
+import { Box, FormControl, HStack, Input, InputField } from '@gluestack-ui/themed';
 import React from 'react';
 import { ScrollView } from 'react-native';
 
@@ -7,11 +7,13 @@ import { ScrollView } from 'react-native';
 import { LoadingSpinner } from '../../../components/loadingSpinner';
 import { getTermFromDictionary } from '../../../translations/TranslationService';
 import { addAppliedFilter } from '../../../util/search';
+import { ThemeContext } from '../../../context/initialContext';
 
 export const Facet_Slider = ({ data, category, updater, language }) => {
      const [isLoading, setIsLoading] = React.useState(true);
      const [startValue, setStartValue] = React.useState('*');
      const [endValue, setEndValue] = React.useState('*');
+     const {theme, textColor, colorMode } = React.useContext(ThemeContext);
 
      React.useEffect(() => {
           appliedStartValue();
@@ -65,39 +67,41 @@ export const Facet_Slider = ({ data, category, updater, language }) => {
 
      return (
           <ScrollView>
-               <Box safeArea={5}>
-                    <FormControl mb={2}>
-                         <HStack space={3} justifyContent="center">
+               <Box p="$5">
+                    <FormControl mb="$2">
+                         <HStack space="sm" justifyContent="center">
                               <Input
                                    size="lg"
-                                   placeholder={getTermFromDictionary(language, 'from')}
-                                   accessibilityLabel={getTermFromDictionary(language, 'from')}
-                                   defaultValue={startValue}
-                                   value={startValue}
-                                   onChangeText={(value) => {
-                                        updateValue('startValue', value);
-                                   }}
-                                   w="50%"
-                                   _dark={{
-                                        color: 'muted.50',
-                                        borderColor: 'muted.50',
-                                   }}
-                              />
+                                   flex={1}
+                                   borderColor={colorMode === 'light' ? theme['colors']['coolGray']['500'] : theme['colors']['gray']['300']}
+                              >
+                                   <InputField
+                                        placeholder={getTermFromDictionary(language, 'from')}
+                                        accessibilityLabel={getTermFromDictionary(language, 'from')}
+                                        defaultValue={startValue}
+                                        value={startValue}
+                                        onChangeText={(value) => {
+                                             updateValue('startValue', value);
+                                        }}
+                                        color={textColor}
+                                   />
+                              </Input>
                               <Input
                                    size="lg"
-                                   placeholder={getTermFromDictionary(language, 'to')}
-                                   accessibilityLabel={getTermFromDictionary(language, 'to')}
-                                   defaultValue={endValue}
-                                   value={endValue}
-                                   onChangeText={(value) => {
-                                        updateValue('endValue', value);
-                                   }}
-                                   w="50%"
-                                   _dark={{
-                                        color: 'muted.50',
-                                        borderColor: 'muted.50',
-                                   }}
-                              />
+                                   flex={1}
+                                   borderColor={colorMode === 'light' ? theme['colors']['coolGray']['500'] : theme['colors']['gray']['300']}
+                              >
+                                   <InputField
+                                        placeholder={getTermFromDictionary(language, 'to')}
+                                        accessibilityLabel={getTermFromDictionary(language, 'to')}
+                                        defaultValue={endValue}
+                                        value={endValue}
+                                        onChangeText={(value) => {
+                                             updateValue('endValue', value);
+                                        }}
+                                        color={textColor}
+                                   />
+                              </Input>
                          </HStack>
                     </FormControl>
                </Box>
