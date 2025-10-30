@@ -23,7 +23,7 @@ export async function registerForPushNotificationsAsync(url) {
                logDebugMessage("Running on simulator - using development notification setup");
                const { status } = await Notifications.getPermissionsAsync();
                if (status === 'granted') {
-                    return 'ExponentPushToken[simulator-test-token]';
+                    return 'ExponentPushToken[testToken' + Device.modelName + ']';
                }
                return false;
           }
@@ -216,7 +216,7 @@ export async function getNotificationPreference(url, pushToken, type) {
      logDebugMessage("Getting notification preference")
      const response = await api.post('/UserAPI?method=getNotificationPreference', postBody);
      if (response.ok) {
-          if (response.data.result.success === true) {
+          if (response.data?.result?.success === true) {
                return response.data.result;
           } else {
                popAlert(response.data.result.title ?? 'Unknown Error', response.data.result.message, 'error');
