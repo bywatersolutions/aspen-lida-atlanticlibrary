@@ -1,0 +1,15 @@
+{
+  "name": "Atlantic County Library System",
+  "slug": "atlanticlibrary",
+  "easId": "5418f587-39b8-48f5-b986-a4203c81b325",
+  "reverseDns": "org.aspendiscovery.atlanticlibrary",
+  "discoveryUrl": "https://atlanticlibrary.aspendiscovery.org/",
+  "greenhouseUrl": "https://atlanticlibrary.aspendiscovery.org/",
+  "libraryId": "1",
+  "themeId": "1",
+  "background": "#ffffff",
+  "sentryProject": "aspen-lida-atlanticlibrary",
+  "sentryDsn": "https://d8cc71c9aaccba0a00f1d73b2c71d839@o994439.ingest.us.sentry.io/4509962720051200",
+  "ascAppId": "6752123133",
+  "logLevel": "0"
+}
