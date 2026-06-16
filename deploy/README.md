@@ -54,3 +54,11 @@ Builds can be run manually, but are automatically triggered whenever changes to 
 
 **Important Note**: while it is possible to submit multiple builds with the same version BEFORE publication, once an app has been published within the store, further builds will need an incremented version number (found in `/version.json`) to be accepted.
 
+# Testing locally
+To test code on your local machine, run
+```
+cp deploy/app.config.js code/app.config.js
+cp deploy/build.json code/build.json
+cp deploy/app.json code/app.json
+npx expo start --dev-client
+```
